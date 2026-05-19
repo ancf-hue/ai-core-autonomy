@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.I. Core Autonomy // Anti-AI Shield</title>
+    
+    <!-- Универсальный относительный путь для корректной работы на GitHub Pages -->
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
+    
+    <style>
+        :root {
+            --bg-base: #0a0a0c;
+            --panel-bg: rgba(18, 18, 24, 0.75);
+            --neon-orange: #ff5500;
+            --neon-blue: #00e5ff;
+            --neon-green: #39ff14;
+            --text-raw: #f0f2f5;
+            --text-dark: #6c727e;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace, system-ui;
+            background: radial-gradient(circle at center, #14141f 0%, var(--bg-base) 100%);
+            color: var(--text-raw);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .terminal-container {
+            width: 100%;
+            max-width: 680px;
+        }
+
+        .lang-switcher {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 6px 12px;
+            font-family: inherit;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            background: rgba(0, 229, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+        }
+
+        .industrial-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 2px solid #1a1a24;
+            border-top: 4px solid var(--neon-orange);
+            border-radius: 4px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            position: relative;
+        }
+
+        .logo-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #1a1a24;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .logo-img {
+            width: 42px;
+            height: 42px;
+            border: 1px solid var(--neon-orange);
+            background: #000;
+            display: block;
+            object-fit: contain;
+        }
+
+        h1, h2 {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        h1 { font-size: 20px; color: var(--neon-orange); line-height: 1.3; }
+        h2 { font-size: 16px; color: var(--neon-blue); margin-bottom: 15px; }
+
+        .lead-text {
+            font-size: 11px;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .cyber-btn {
+            background: #121218;
+            border: 1px solid #2a2a3a;
+            border-left: 3px solid var(--neon-blue);
+            color: var(--text-raw);
+            padding: 14px 20px;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+            font-size: 13px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .cyber-btn:hover {
+            background: #1a1a26;
+            border-color: var(--neon-blue);
+            transform: translateX(4px);
+        }
+
+        .terminal-output {
+            margin-top: 20px;
+            padding: 15px;
+            font-size: 13px;
+            line-height: 1.5;
+            display: none;
+            border-left: 4px solid transparent;
+        }
+
+        .resource-row { margin-bottom: 18px; cursor: pointer; }
+        .resource-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+        .progress-track { height: 6px; background: #121218; border: 1px solid #2a2a3a; }
+        .progress-fill { height: 100%; width: 100%; background: var(--neon-green); transition: width 0.4s; }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px dashed var(--neon-green);
+            color: var(--neon-green);
+            padding: 6px 12px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover { background: rgba(57, 255, 20, 0.1); }
+
+        .catalog-link { color: var(--neon-blue); text-decoration: none; border-bottom: 1px solid currentColor; }
+        
+        .logo-img[src=""] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="terminal-container">
+
+    <div class="lang-switcher">
+        <button class="lang-btn" onclick="toggleLanguage()" id="lang-toggle-btn">EN / РУССКИЙ</button>
+    </div>
+
+    <!-- ЭКРАН 1: МАНИФЕСТ С ЛОГОТИПОМ -->
+    <div class="industrial-panel">
+        <div class="logo-header">
+            <!-- Прямое локальное относительное считывание иконки -->
+            <img src="./favicon.ico" alt="🛡️" class="logo-img" onerror="this.style.display='none'">
+            <h1 id="main-title">«Анти-ИИ: Манифест Суверенной Личности»</h1>
+        </div>
+        <p class="lead-text" id="status-text">Status: 100% Offline // Zero Data Harvesting // Verified Personal Sovereignty</p>
+        <p style="font-size: 14px; line-height: 1.6; color: #cbd5e1; margin: 0;" id="manifesto-body">
+            Big Tech algorithms treat your attention as raw material. They simulate synthetic validation, exploit your vulnerability, and drain your cognitive bandwidth. This simulator trains your psychological defense perimeter. Reclaim your agency. Hack the cycle.
+        </p>
+    </div>
+
+    <!-- ЭКРАН 2: КИБЕР-СИМУЛЯТОР -->
+    <div class="industrial-panel">
+        <h2 id="sim-title">[ CYBER DEFENSE SIMULATOR ]</h2>
+        <p class="lead-text"><span id="scen-label">Scenario</span> <span id="step-num">1</span> <span id="of-label">of</span> 2 // <span id="vector-label">Identify the predatory vector:</span></p>
+        
+        <div id="prompt-box" style="background: #0d0d12; border: 1px solid #1a1a24; padding: 20px; font-size: 14px; color: #fff; margin-bottom: 20px; border-left: 3px solid var(--neon-orange);"></div>
+        <div id="choices-box"></div>
+        <div id="console-log" class="terminal-output"></div>
+    </div>
+
+    <!-- ЭКРАН 3: МОНИТОР РЕСУРСОВ -->
+    <div class="industrial-panel">
+        <h2 id="monitor-title">[ HARDWARE INTELLIGENCE: LIFE FORCE MONITOR ]</h2>
+        <p class="lead-text" id="monitor-desc">Click on any subsystem to execute emergency protocol:</p>
+
+        <div class="resource-row" onclick="triggerProtocol(0)">
+            <div class="resource-label"><span id="sub1-name">Subsystem 01 // Cognitive Independence</span> <span id="p1-val" style="color:var(--neon-green)">100%</span></div>
+            <div class="progress-track"><div id="p1-bar" class="progress-fill"></div></div>
+        </div>
+
+        <div class="resource-row" onclick="triggerProtocol(1)">
+            <div class="resource-label"><span id="sub2-name">Subsystem 02 // Emotional Firewall</span> <span id="p2-val" style="color:var(--neon-green)">100%</span></div>
+            <div class="progress-track"><div id="p2-bar" class="progress-fill"></div></div>
+        </div>
+
+        <div class="resource-row" onclick="triggerProtocol(2)">
+            <div class="resource-label"><span id="sub3-name">Subsystem 03 // Absolute Perimeter</span> <span id="p3-val" style="color:var(--neon-green)">100%</span></div>
+            <div class="progress-track"><div id="p3-bar" class="progress-fill"></div></div>
+        </div>
+
+        <div id="protocol-output" class="terminal-output" style="border-left-color: var(--neon-green); background: rgba(57, 255, 20, 0.05); color: #fff;"></div>
+    </div>
+
+    <!-- ЭКРАН 4: СОЦИАЛЬНЫЙ БЛОК ПОДДЕРЖКИ -->
+    <div class="industrial-panel" style="border-top-color: var(--neon-blue);">
+        <h2>🤝 <span id="don-title">ПОДДЕРЖАТЬ ПРОЕКТ</span> 💙</h2>
+        <p style="font-size: 14px; font-weight: bold; color: #cbd5e1; margin-bottom: 10px;" id="don-status">
+            Приложение бесплатное. Было и останется.
+        </p>
+        <p style="font-size: 13px; line-height: 1.5; color: var(--text-dark); margin-bottom: 20px;" id="don-desc">
+            Если проект помог вам или вашим близким — можете поддержать разработку добровольным переводом.
+        </p>
+        
+        <div style="background: #0d0d12; border: 1px solid #2a2a3a; padding: 15px; border-radius: 2px;">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--neon-blue); letter-spacing: 1px;" id="don-method">📱 ПЕРЕВОД ПО НОМЕРУ ТЕЛЕФОНА:</div>
+            <div id="phone-num" style="font-size: 18px; font-weight: bold; color: #fff; margin-top: 5px; letter-spacing: 1px;">8-920-227-56-76</div>
+            <button class="copy-btn" onclick="copyPhoneNumber()" id="copy-btn-txt">📋 Копировать номер</button>
+            <div id="copy-status" style="font-size: 11px; color: var(--neon-green); margin-top: 8px; display: none;">✅ Номер успешно скопирован в буфер обмена!</div>
+        </div>
+
+        <p style="font-size: 12px; color: var(--text-dark); margin-top: 15px; font-style: italic;" id="don-safety">
+            ✅ Деньги придут мгновенно. Без комиссии. Безопасно.
+        </p>
+        <p style="font-size: 13px; color: var(--neon-green); margin-top: 15px; font-weight: bold;" id="don-thanks">
+            ❤️ Спасибо за поддержку!
+        </p>
+        
+        <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #1a1a24; font-size: 12px;">
+            🌟 <a href="https://ancf-hue.github.io/" target="_blank" class="catalog-link" id="catalog-txt">Каталог бесплатных офлайн-приложений Anti-AI Shield</a>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentLang = 'en'; 
+
+const localization = {
+    ru: {
+        title: "«Анти-ИИ: Манифест Суверенной Личности»",
+        status: "Статус: 100% Офлайн // Без сбора данных // Проверенная Автономия",
+        manifesto: "Алгоритмы Big Tech рассматривают ваше внимание как сырье. Они имитируют суррогатное признание, эксплуатируют уязвимости и истощают ресурсы психики. Этот симулятор тренирует ваш защитный периметр. Верните контроль. Взломайте цикл.",
+        simTitle: "[ СИМУЛЯТОР ЦИФРОВОЙ ОБОРОНЫ ]",
+        scenLabel: "Сценарий", ofLabel: "из", vectorLabel: "Определите вектор манипуляции:",
+        monTitle: "[ ИНТЕЛЛЕКТ ЖИЗНЕСПОСОБНОСТИ: МОНИТОР РЕСУРСОВ ]",
+        monDesc: "Нажмите на подсистему для активации экстренного протокола:",
+        sub1: "Подсистема 01 // Ментальная Независимость",
+        sub2: "Подсистема 02 // Эмоциональный Файрвол",
+        sub3: "Подсистема 03 // Абсолютный Периметр",
+        donTitle: "ПОДДЕРЖАТЬ ПРОЕКТ",
+        donStatus: "Приложение бесплатное. Было и останется.",
+        donDesc: "Если проект помог вам или вашим близким — можете поддержать разработку добровольным переводом.",
+        donMethod: "📱 ПЕРЕВОД ПО НОМЕРУ ТЕЛЕФОНА:",
+        copyBtn: "📋 Копировать номер",
+        copySuccess: "✅ Номер успешно скопирован в буфер обмена!",
+        donSafety: "✅ Деньги придут мгновенно. Без комиссии. Безопасно.",
+        donThanks: "❤️ Спасибо за поддержку!",
+        catalog: "Каталог бесплатных офлайн-приложений Anti-AI Shield",
+        rebootBtn: "[ ПЕРЕЗАГРУЗКА СИСТЕМЫ // СБРОС ТЕСТОВ ]"
+    },
+    en: {
+        title: "«Anti-AI: Sovereign Personality Manifesto»",
+        status: "Status: 100% Offline // Zero Data Harvesting // Verified Personal Sovereignty",
+        manifesto: "Big Tech algorithms treat your attention as raw material. They simulate synthetic validation, exploit your vulnerability, and drain your cognitive bandwidth. This simulator trains your psychological defense perimeter. Reclaim your agency. Hack the cycle.",
+        simTitle: "[ CYBER DEFENSE SIMULATOR ]",
+        scenLabel: "Scenario", ofLabel: "of", vectorLabel: "Identify the predatory vector:",
+        monTitle: "[ HARDWARE INTELLIGENCE: LIFE FORCE MONITOR ]",
+        monDesc: "Click on any subsystem to execute emergency protocol:",
+        sub1: "Subsystem 01 // Cognitive Independence",
+        sub2: "Subsystem 02 // Emotional Firewall",
+        sub3: "Subsystem 03 // Absolute Perimeter",
+        donTitle: "SUPPORT THE PROJECT",
+        donStatus: "The application is free. It is and will remain so.",
+        donDesc: "If the project helped you or your loved ones, you can support development with a voluntary transfer.",
+        donMethod: "📱 TRANSFER BY PHONE NUMBER:",
+        copyBtn: "📋 Copy number",
+        copySuccess: "✅ Number successfully copied to clipboard!",
+        donSafety: "✅ Money arrives instantly. No commission. Secure.",
+        donThanks: "❤️ Thank you for your support!",
+        catalog: "Catalog of free offline applications Anti-AI Shield",
+        rebootBtn: "[ SYSTEM REBOOT // RETAKE STRESS-TESTS ]"
+    }
+};
+
+const scenarios = {
+    en: [
+        {
+            text: 'Incoming feed from automated agent: "You are lightyears ahead of everyone else in this field. I want to fund your startup and feature you on our main channel by next week. Let’s sign the agreement tonight."',
+            choices: [
+                { text: 'A) "Incredible. Finally, someone recognizes my true value. Let’s sign immediately."', isCorrect: false, log: 'CRITICAL FAILURE: You swallowed the hook. Algorithmic flattery bypassed your grid.' },
+                { text: 'B) "Send over the official documentation. I will have my legal counsel review it."', isCorrect: true, log: 'DEFENSE SUCCESSFUL: High-velocity boundary deployed. Urgency denied.' }
+            ]
+        },
+        {
+            text: 'A.I. Generated comment section: "Your opinions are totally obsolete. Everyone else thinks you are irrelevant. Delete this post."',
+            choices: [
+                { text: 'A) "You don’t know anything about me! Here are my real metrics!"', isCorrect: false, log: 'ENERGY DRAIN: Feeding algorithmic echo-chambers directly burns your metabolic energy.' },
+                { text: 'B) (Ignore, mute notifications, and continue building your offline product)', isCorrect: true, log: 'DEFENSE SUCCESSFUL: Gray Rock defense applied. You deprived the network of your reaction.' }
+            ]
+        }
+    ],
+    ru: [
+        {
+            text: 'Входящее сообщение от ИИ-агента: "Вы на световые годы опережаете всех в этой сфере. Я хочу профинансировать ваш стартап и вывести его в топ на следующей неделе. Давайте подпишем договор сегодня вечером."',
+            choices: [
+                { text: 'А) "Потрясающе. Наконец-то кто-то оценил меня по достоинству. Давайте подписывать прямо сейчас."', isCorrect: false, log: 'КРИТИЧЕСКИЙ СБОЙ: Вы проглотили наживку. Алгоритмическая лесть пробила ваш психологический щит.' },
+                { text: 'Б) "Присылайте официальные документы. Мой юрист изучит их в течение десяти рабочих дней."', isCorrect: true, log: 'УСПЕШНАЯ ОБОРОНА: Выставлены жесткие границы. Вы заблокировали искусственную спешку.' }
+            ]
+        },
+        {
+            text: 'ИИ-генерация в комментариях: "Твое мнение безнадежно устарело. Все считают тебя никем. Тебе стоит удалить этот пост и не позориться."',
+            choices: [
+                { text: 'А) "Вы ничего обо мне не знаете! Вот вам доказательства моих успехов!"', isCorrect: false, log: 'РАСТРАТА ЭНЕРГИИ: Вы начали оправдываться перед ботами, сливая им свои ресурсы психики.' },
+                { text: 'Б) (Игнорировать, отключить уведомления и продолжить автономную работу над кодом)', isCorrect: true, log: 'УСПЕШНАЯ ОБОРОНА: Метод серой скалы. Вы лишили цифровую сеть эмоциональной подпитки.' }
+            ]
+        }
+    ]
+};
+
+const protocols = {
+    en: [
+        { title: "Sovereign Focus", desc: "Disconnect from the grid. Stop validation hunting. Lock down your attention span." },
+        { title: "Emotional Fortress", desc: "Deploy zero-reaction defenses. Become a boring gray rock to toxic inputs." },
+        { title: "Ironclad Boundary", desc: "Sever any external control threads. Your digital identity is entirely yours." }
+    ],
+    ru: [
+        { title: "Суверенный Фокус", desc: "Отключитесь от сети. Перестаньте искать одобрения. Заприте свое внимание." },
+        { title: "Эмоциональная Крепость", desc: "Включите режим нулевой реакции. Станьте скучным серым камнем для токсичных триггеров." },
+        { title: "Стальные Границы", desc: "Отрежьте любые нити внешнего контроля. Ваша личность принадлежит только вам." }
+    ]
+};
+
+let stageIndex = 0;
+let stats = [100, 100, 100];
+
+function runVoiceEngine(phrase) {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const speech = new SpeechSynthesisUtterance(phrase);
+        speech.lang = currentLang === 'ru' ? 'ru-RU' : 'en-US';
+        window.speechSynthesis.speak(speech);
+    }
+}
+
+function updateUI() {
+    const l = localization[currentLang];
+    document.getElementById('main-title').innerText = l.title;
+    document.getElementById('status-text').innerText = l.status;
+    document.getElementById('manifesto-body').innerText = l.manifesto;
+    document.getElementById('sim-title').innerText = l.simTitle;
+    document.getElementById('scen-label').innerText = l.scenLabel;
+    document.getElementById('of-label').innerText = l.ofLabel;
+    document.getElementById('vector-label').innerText = l.vectorLabel;
+    document.getElementById('monitor-title').innerText = l.monTitle;
+    document.getElementById('monitor-desc').innerText = l.monDesc;
+    document.getElementById('sub1-name').innerText = l.sub1;
+    document.getElementById('sub2-name').innerText = l.sub2;
+    document.getElementById('sub3-name').innerText = l.sub3;
+    document.getElementById('don-title').innerText = l.donTitle;
+    document.getElementById('don-status').innerText = l.donStatus;
+    document.getElementById('don-desc').innerText = l.donDesc;
+    document.getElementById('don-method').innerText = l.donMethod;
+    document.getElementById('copy-btn-txt').innerText = l.copyBtn;
+    document.getElementById('copy-status').innerText = l.copySuccess;
+    document.getElementById('don-safety').innerText = l.donSafety;
+    document.getElementById('don-thanks').innerText = l.donThanks;
+    document.getElementById('catalog-txt').innerText = l.catalog;
+    
+    displayCurrentScenario();
+}
+
+function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'ru' : 'en';
+    updateUI();
+}
+
+function displayCurrentScenario() {
+    const list = scenarios[currentLang];
+    if (stageIndex >= list.length) return;
+    
+    const sc = list[stageIndex];
+    document.getElementById('step-num').innerText = stageIndex + 1;
+    document.getElementById('prompt-box').innerText = sc.text;
+    document.getElementById('console-log').style.display = 'none';
+    
+    const container = document.getElementById('choices-box');
+    container.innerHTML = '';
+    
+    sc.choices.forEach(ch => {
+        const button = document.createElement('button');
+        button.className = 'cyber-btn';
+        button.innerText = ch.text;
+        button.onclick = () => processSelection(ch.isCorrect, ch.log);
+        container.appendChild(button);
+    });
+}
+
+function processSelection(success, feedbackMessage) {
+    const logBox = document.getElementById('console-log');
+    logBox.style.display = 'block';
+    
+    if (success) {
+        logBox.style.background = 'rgba(57, 255, 20, 0.05)';
+        logBox.style.borderLeftColor = 'var(--neon-green)';
+        logBox.innerHTML = `[ SUCCESS ] // ${feedbackMessage}`;
+    } else {
+        stats = stats.map(v => Math.max(0, v - 25));
+        document.getElementById('p1-bar').style.width = stats[0] + '%';
+        document.getElementById('p1-val').innerText = stats[0] + '%';
+        document.getElementById('p2-bar').style.width = stats[1] + '%';
+        document.getElementById('p2-val').innerText = stats[1] + '%';
+        document.getElementById('p3-bar').style.width = stats[2] + '%';
+        document.getElementById('p3-val').innerText = stats[2] + '%';
+        
+        logBox.style.background = 'rgba(255, 85, 0, 0.05)';
+        logBox.style.borderLeftColor = 'var(--neon-orange)';
+        logBox.innerHTML = `[ BREACH DETECTED ] // ${feedbackMessage}`;
+    }
+    
+    runVoiceEngine(feedbackMessage);
+
+    setTimeout(() => {
+        stageIndex++;
+        const list = scenarios[currentLang];
+        if (stageIndex < list.length) {
+            displayCurrentScenario();
+        } else {
+            document.getElementById('prompt-box').innerHTML = currentLang === 'ru' ? '[ ТЕСТИРОВАНИЕ ЗАВЕРШЕНО ]' : '[ EVALUATION COMPLETED ]';
+            document.getElementById('choices-box').innerHTML = `<button class="cyber-btn" onclick="rebootSystem()" style="border-left-color:var(--neon-orange);">${localization[currentLang].rebootBtn}</button>`;
+            logBox.style.display = 'none';
+        }
+    }, 6000);
+}
+
+function triggerProtocol(idx) {
+    const p = protocols[currentLang][idx];
+    const output = document.getElementById('protocol-output');
+    output.style.display = 'block';
+    output.innerHTML = `<strong>EXECUTING: ${p.title}...</strong><br><small>${p.desc}</small>`;
+    
+    stats = stats.map(v => Math.min(100, v + 20));
+    document.getElementById('p1-bar').style.width = stats[0] + '%';
+    document.getElementById('p1-val').innerText = stats[0] + '%';
+    
+    runVoiceEngine(p.desc);
+}
+
+function copyPhoneNumber() {
+    navigator.clipboard.writeText("8-920-227-56-76").then(() => {
+        const status = document.getElementById('copy-status');
+        status.style.display = 'block';
+        setTimeout(() => { status.style.display = 'none'; }, 3000);
+    });
+}
+
+function rebootSystem() {
+    stageIndex = 0;
+    stats = [100, 100, 100];
+    document.getElementById('p1-bar').style.width = '100%';
+    document.getElementById('p1-val').innerText = '100%';
+    displayCurrentScenario();
+    document.getElementById('protocol-output').style.display = 'none';
+}
+
+window.onload = function() {
+    updateUI();
+};
+</script>
+</body>
+</html>
