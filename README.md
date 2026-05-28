@@ -55,3 +55,12 @@ This application is entirely free. It always was, and it always will be. If this
 
 ---
 *Built for Freedom // Anti-AI Shield Network*
+
+🌟 👉https://ancf-hue.github.io/
+Каталог бесплатных офлайн-приложений Anti-AI Shield.
+
+
+## 📜 Лицензия
+Код доступен для изучения, модификации и некоммерческого использования.
+Коммерческое распространение или интеграция в платные сервисы допускается только с письменного согласия автора.
+
