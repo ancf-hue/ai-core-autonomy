@@ -28,6 +28,7 @@
             padding: 20px;
             display: flex;
             justify-content: center;
+            min-height: 100vh;
         }
 
         .terminal-container {
@@ -50,6 +51,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.2s ease;
+            border-radius: 2px;
         }
 
         .lang-btn:hover {
@@ -86,6 +88,7 @@
             background: #000;
             display: block;
             object-fit: contain;
+            flex-shrink: 0;
         }
 
         h1, h2 {
@@ -118,12 +121,17 @@
             cursor: pointer;
             margin-bottom: 12px;
             transition: all 0.2s ease;
+            border-radius: 2px;
         }
 
         .cyber-btn:hover {
             background: #1a1a26;
             border-color: var(--neon-blue);
             transform: translateX(4px);
+        }
+
+        .cyber-btn:active {
+            transform: translateX(2px) scale(0.98);
         }
 
         .terminal-output {
@@ -133,9 +141,19 @@
             line-height: 1.5;
             display: none;
             border-left: 4px solid transparent;
+            border-radius: 2px;
         }
 
-        .resource-row { margin-bottom: 18px; cursor: pointer; }
+        .resource-row { 
+            margin-bottom: 18px; 
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .resource-row:hover {
+            opacity: 0.8;
+        }
+
         .resource-label {
             font-size: 11px;
             text-transform: uppercase;
@@ -144,8 +162,22 @@
             justify-content: space-between;
             margin-bottom: 6px;
         }
-        .progress-track { height: 6px; background: #121218; border: 1px solid #2a2a3a; }
-        .progress-fill { height: 100%; width: 100%; background: var(--neon-green); transition: width 0.4s; }
+
+        .progress-track { 
+            height: 6px; 
+            background: #121218; 
+            border: 1px solid #2a2a3a;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill { 
+            height: 100%; 
+            width: 100%; 
+            background: var(--neon-green); 
+            transition: width 0.4s ease;
+            border-radius: 2px;
+        }
 
         .copy-btn {
             background: transparent;
@@ -157,13 +189,46 @@
             cursor: pointer;
             margin-top: 10px;
             transition: all 0.2s;
+            border-radius: 2px;
         }
-        .copy-btn:hover { background: rgba(57, 255, 20, 0.1); }
 
-        .catalog-link { color: var(--neon-blue); text-decoration: none; border-bottom: 1px solid currentColor; }
-        
+        .copy-btn:hover { 
+            background: rgba(57, 255, 20, 0.1);
+            border-style: solid;
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .catalog-link { 
+            color: var(--neon-blue); 
+            text-decoration: none; 
+            border-bottom: 1px solid currentColor;
+            transition: opacity 0.2s;
+        }
+
+        .catalog-link:hover {
+            opacity: 0.7;
+        }
+
         .logo-img[src=""] {
             display: none;
+        }
+
+        #copy-status {
+            transition: opacity 0.3s;
+        }
+
+        @media (max-width: 480px) {
+            .industrial-panel {
+                padding: 20px;
+            }
+            h1 { font-size: 16px; }
+            .cyber-btn {
+                font-size: 12px;
+                padding: 12px 16px;
+            }
         }
     </style>
 </head>
@@ -178,7 +243,6 @@
     <!-- ЭКРАН 1: МАНИФЕСТ С ЛОГОТИПОМ -->
     <div class="industrial-panel">
         <div class="logo-header">
-            <!-- Прямое локальное относительное считывание иконки -->
             <img src="./favicon.ico" alt="🛡️" class="logo-img" onerror="this.style.display='none'">
             <h1 id="main-title">«Анти-ИИ: Манифест Суверенной Личности»</h1>
         </div>
@@ -193,7 +257,7 @@
         <h2 id="sim-title">[ CYBER DEFENSE SIMULATOR ]</h2>
         <p class="lead-text"><span id="scen-label">Scenario</span> <span id="step-num">1</span> <span id="of-label">of</span> 2 // <span id="vector-label">Identify the predatory vector:</span></p>
         
-        <div id="prompt-box" style="background: #0d0d12; border: 1px solid #1a1a24; padding: 20px; font-size: 14px; color: #fff; margin-bottom: 20px; border-left: 3px solid var(--neon-orange);"></div>
+        <div id="prompt-box" style="background: #0d0d12; border: 1px solid #1a1a24; padding: 20px; font-size: 14px; color: #fff; margin-bottom: 20px; border-left: 3px solid var(--neon-orange); border-radius: 2px;"></div>
         <div id="choices-box"></div>
         <div id="console-log" class="terminal-output"></div>
     </div>
@@ -275,7 +339,8 @@ const localization = {
         donSafety: "✅ Деньги придут мгновенно. Без комиссии. Безопасно.",
         donThanks: "❤️ Спасибо за поддержку!",
         catalog: "Каталог бесплатных офлайн-приложений Anti-AI Shield",
-        rebootBtn: "[ ПЕРЕЗАГРУЗКА СИСТЕМЫ // СБРОС ТЕСТОВ ]"
+        rebootBtn: "[ ПЕРЕЗАГРУЗКА СИСТЕМЫ // СБРОС ТЕСТОВ ]",
+        langBtn: "EN / РУССКИЙ"
     },
     en: {
         title: "«Anti-AI: Sovereign Personality Manifesto»",
@@ -297,23 +362,24 @@ const localization = {
         donSafety: "✅ Money arrives instantly. No commission. Secure.",
         donThanks: "❤️ Thank you for your support!",
         catalog: "Catalog of free offline applications Anti-AI Shield",
-        rebootBtn: "[ SYSTEM REBOOT // RETAKE STRESS-TESTS ]"
+        rebootBtn: "[ SYSTEM REBOOT // RETAKE STRESS-TESTS ]",
+        langBtn: "RU / ENGLISH"
     }
 };
 
 const scenarios = {
     en: [
         {
-            text: 'Incoming feed from automated agent: "You are lightyears ahead of everyone else in this field. I want to fund your startup and feature you on our main channel by next week. Let’s sign the agreement tonight."',
+            text: 'Incoming feed from automated agent: "You are lightyears ahead of everyone else in this field. I want to fund your startup and feature you on our main channel by next week. Let\'s sign the agreement tonight."',
             choices: [
-                { text: 'A) "Incredible. Finally, someone recognizes my true value. Let’s sign immediately."', isCorrect: false, log: 'CRITICAL FAILURE: You swallowed the hook. Algorithmic flattery bypassed your grid.' },
+                { text: 'A) "Incredible. Finally, someone recognizes my true value. Let\'s sign immediately."', isCorrect: false, log: 'CRITICAL FAILURE: You swallowed the hook. Algorithmic flattery bypassed your grid.' },
                 { text: 'B) "Send over the official documentation. I will have my legal counsel review it."', isCorrect: true, log: 'DEFENSE SUCCESSFUL: High-velocity boundary deployed. Urgency denied.' }
             ]
         },
         {
             text: 'A.I. Generated comment section: "Your opinions are totally obsolete. Everyone else thinks you are irrelevant. Delete this post."',
             choices: [
-                { text: 'A) "You don’t know anything about me! Here are my real metrics!"', isCorrect: false, log: 'ENERGY DRAIN: Feeding algorithmic echo-chambers directly burns your metabolic energy.' },
+                { text: 'A) "You don\'t know anything about me! Here are my real metrics!"', isCorrect: false, log: 'ENERGY DRAIN: Feeding algorithmic echo-chambers directly burns your metabolic energy.' },
                 { text: 'B) (Ignore, mute notifications, and continue building your offline product)', isCorrect: true, log: 'DEFENSE SUCCESSFUL: Gray Rock defense applied. You deprived the network of your reaction.' }
             ]
         }
@@ -351,13 +417,21 @@ const protocols = {
 
 let stageIndex = 0;
 let stats = [100, 100, 100];
+let isProcessing = false;
 
 function runVoiceEngine(phrase) {
     if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const speech = new SpeechSynthesisUtterance(phrase);
-        speech.lang = currentLang === 'ru' ? 'ru-RU' : 'en-US';
-        window.speechSynthesis.speak(speech);
+        try {
+            window.speechSynthesis.cancel();
+            const speech = new SpeechSynthesisUtterance(phrase);
+            speech.lang = currentLang === 'ru' ? 'ru-RU' : 'en-US';
+            speech.rate = 0.9;
+            speech.pitch = 1;
+            speech.volume = 1;
+            window.speechSynthesis.speak(speech);
+        } catch (e) {
+            console.warn('Speech synthesis error:', e);
+        }
     }
 }
 
@@ -380,10 +454,10 @@ function updateUI() {
     document.getElementById('don-desc').innerText = l.donDesc;
     document.getElementById('don-method').innerText = l.donMethod;
     document.getElementById('copy-btn-txt').innerText = l.copyBtn;
-    document.getElementById('copy-status').innerText = l.copySuccess;
     document.getElementById('don-safety').innerText = l.donSafety;
     document.getElementById('don-thanks').innerText = l.donThanks;
     document.getElementById('catalog-txt').innerText = l.catalog;
+    document.getElementById('lang-toggle-btn').innerText = l.langBtn;
     
     displayCurrentScenario();
 }
@@ -395,7 +469,12 @@ function toggleLanguage() {
 
 function displayCurrentScenario() {
     const list = scenarios[currentLang];
-    if (stageIndex >= list.length) return;
+    if (stageIndex >= list.length) {
+        document.getElementById('prompt-box').innerHTML = currentLang === 'ru' ? '[ ТЕСТИРОВАНИЕ ЗАВЕРШЕНО ]' : '[ EVALUATION COMPLETED ]';
+        document.getElementById('choices-box').innerHTML = `<button class="cyber-btn" onclick="rebootSystem()" style="border-left-color:var(--neon-orange);">${localization[currentLang].rebootBtn}</button>`;
+        document.getElementById('console-log').style.display = 'none';
+        return;
+    }
     
     const sc = list[stageIndex];
     document.getElementById('step-num').innerText = stageIndex + 1;
@@ -405,7 +484,7 @@ function displayCurrentScenario() {
     const container = document.getElementById('choices-box');
     container.innerHTML = '';
     
-    sc.choices.forEach(ch => {
+    sc.choices.forEach((ch, index) => {
         const button = document.createElement('button');
         button.className = 'cyber-btn';
         button.innerText = ch.text;
@@ -415,6 +494,9 @@ function displayCurrentScenario() {
 }
 
 function processSelection(success, feedbackMessage) {
+    if (isProcessing) return;
+    isProcessing = true;
+    
     const logBox = document.getElementById('console-log');
     logBox.style.display = 'block';
     
@@ -440,14 +522,8 @@ function processSelection(success, feedbackMessage) {
 
     setTimeout(() => {
         stageIndex++;
-        const list = scenarios[currentLang];
-        if (stageIndex < list.length) {
-            displayCurrentScenario();
-        } else {
-            document.getElementById('prompt-box').innerHTML = currentLang === 'ru' ? '[ ТЕСТИРОВАНИЕ ЗАВЕРШЕНО ]' : '[ EVALUATION COMPLETED ]';
-            document.getElementById('choices-box').innerHTML = `<button class="cyber-btn" onclick="rebootSystem()" style="border-left-color:var(--neon-orange);">${localization[currentLang].rebootBtn}</button>`;
-            logBox.style.display = 'none';
-        }
+        isProcessing = false;
+        displayCurrentScenario();
     }, 6000);
 }
 
@@ -460,27 +536,88 @@ function triggerProtocol(idx) {
     stats = stats.map(v => Math.min(100, v + 20));
     document.getElementById('p1-bar').style.width = stats[0] + '%';
     document.getElementById('p1-val').innerText = stats[0] + '%';
+    document.getElementById('p2-bar').style.width = stats[1] + '%';
+    document.getElementById('p2-val').innerText = stats[1] + '%';
+    document.getElementById('p3-bar').style.width = stats[2] + '%';
+    document.getElementById('p3-val').innerText = stats[2] + '%';
     
     runVoiceEngine(p.desc);
+    
+    setTimeout(() => {
+        output.style.opacity = '0.7';
+    }, 3000);
 }
 
 function copyPhoneNumber() {
-    navigator.clipboard.writeText("8-920-227-56-76").then(() => {
-        const status = document.getElementById('copy-status');
+    const phone = "8-920-227-56-76";
+    const status = document.getElementById('copy-status');
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(phone).then(() => {
+            status.innerText = localization[currentLang].copySuccess;
+            status.style.display = 'block';
+            setTimeout(() => { 
+                status.style.display = 'none'; 
+            }, 3000);
+        }).catch(() => {
+            // Fallback для старых браузеров
+            fallbackCopy(phone);
+        });
+    } else {
+        fallbackCopy(phone);
+    }
+}
+
+function fallbackCopy(text) {
+    const status = document.getElementById('copy-status');
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.opacity = '0';
+    textArea.style.left = '-9999px';
+    document.body.appendChild(textArea);
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        status.innerText = localization[currentLang].copySuccess;
         status.style.display = 'block';
-        setTimeout(() => { status.style.display = 'none'; }, 3000);
-    });
+        setTimeout(() => { 
+            status.style.display = 'none'; 
+        }, 3000);
+    } catch (err) {
+        status.innerText = '❌ ' + (currentLang === 'ru' ? 'Ошибка копирования' : 'Copy failed');
+        status.style.display = 'block';
+        setTimeout(() => { 
+            status.style.display = 'none'; 
+        }, 3000);
+    }
+    
+    document.body.removeChild(textArea);
 }
 
 function rebootSystem() {
     stageIndex = 0;
     stats = [100, 100, 100];
+    isProcessing = false;
+    
     document.getElementById('p1-bar').style.width = '100%';
     document.getElementById('p1-val').innerText = '100%';
-    displayCurrentScenario();
+    document.getElementById('p2-bar').style.width = '100%';
+    document.getElementById('p2-val').innerText = '100%';
+    document.getElementById('p3-bar').style.width = '100%';
+    document.getElementById('p3-val').innerText = '100%';
+    
     document.getElementById('protocol-output').style.display = 'none';
+    document.getElementById('console-log').style.display = 'none';
+    
+    displayCurrentScenario();
+    
+    const msg = currentLang === 'ru' ? 'Система перезагружена. Начинаем заново.' : 'System rebooted. Starting fresh.';
+    runVoiceEngine(msg);
 }
 
+// Инициализация при загрузке страницы
 window.onload = function() {
     updateUI();
 };
